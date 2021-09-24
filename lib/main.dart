@@ -1,5 +1,7 @@
 import 'package:firstproject/button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:math_expressions/math_expressions.dart';
 
 void main() {
@@ -18,9 +20,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
   final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -28,9 +28,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   var userQuestion = "";
   var userAnswer = "";
-
-  final myTextStyle = TextStyle(fontSize: 30, color: Colors.indigo[900]);
-
+  final myTextStyle = TextStyle(fontSize: 50.0, color: Colors.indigo[900]);
+  final displayTextStyle = TextStyle(fontSize: 40.0, color: Colors.white,fontWeight: FontWeight.bold);
+  final titleTextStyle = TextStyle(
+      fontSize: 30.0, color: Colors.white70, fontWeight: FontWeight.bold);
   final List<String> buttons = [
     "C",
     "DEL",
@@ -39,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
     "9",
     "8",
     "7",
-    "x",
+    "X",
     "6",
     "5",
     "4",
@@ -51,35 +52,43 @@ class _MyHomePageState extends State<MyHomePage> {
     "0",
     ".",
     "ANS",
-    "="
+    "=",
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.indigo[100],
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        title: Text(
+        "Eazy CAL",
+        style: titleTextStyle,
+      ),
+      ),
+      backgroundColor: Colors.white12,
       body: Column(
         children: <Widget>[
           Expanded(
             child: Container(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   SizedBox(
-                    height: 50,
+                    height: 10,
                   ),
                   Container(
                       padding: EdgeInsets.all(20),
                       alignment: Alignment.centerLeft,
                       child: Text(
                         userQuestion,
-                        style: TextStyle(fontSize: 20),
+                        style: displayTextStyle,
                       )),
                   Container(
                       padding: EdgeInsets.all(20),
                       alignment: Alignment.centerRight,
                       child: Text(
                         userAnswer,
-                        style: TextStyle(fontSize: 20),
+                        style: displayTextStyle,
                       ))
                 ],
               ),
@@ -116,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       });
                     },
                     buttonText: buttons[index],
-                    color: Colors.redAccent,
+                    color: Colors.red,
                     textColor: Colors.indigo[900],
                   );
                   //equal button
@@ -167,8 +176,13 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  bool isOperator(String x) {
-    if (x == "%" || x == "/" || x == "x" || x == "-" || x == "+" || x == "=") {
+  bool isOperator(String operator) {
+    if (operator == "%" ||
+        operator == "/" ||
+        operator == "X" ||
+        operator == "-" ||
+        operator == "+" ||
+        operator == "=") {
       return true;
     }
     return false;
@@ -176,7 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void equalPressed() {
     String finalQuestion = userQuestion;
-    finalQuestion = finalQuestion.replaceAll("x", "*");
+    finalQuestion = finalQuestion.replaceAll("X", "*");
 
     Parser p = Parser();
     Expression exp = p.parse(finalQuestion);
